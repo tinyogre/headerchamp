@@ -28,6 +28,17 @@ def file_size(file):
     f.close()
     return count
 
+def add_recursive_count(sub, visited):
+    if not sub in sources:
+        return
+
+    src = sources[sub]
+    src.count += 1
+    for h in src.includes:
+        if not h in visited:
+            visited.add(h)
+            add_recursive_count(h, visited)
+
 def add_header(header, included_by):
     if not header in sources:
         #print 'added: ' + header
@@ -36,7 +47,8 @@ def add_header(header, included_by):
         parse(header, os.path.split(header)[0], True)
     else:
         h = sources[header]
-        
+        add_recursive_count(header, set())
+
     h.count += 1
     if included_by:
         h.add_included_by(included_by)
