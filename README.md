@@ -19,8 +19,12 @@ C and C++ header dependency problems.
 Example
 -------
 
-python headerchamp.py -I project/relative/include/dir/1 -I
-project/relative/include/dir/2 -I /system/include/dir project_dir
+    python headerchamp.py -I project/relative/include/dir/1 -I project/relative/include/dir/2 -I /system/include/dir project_dir
+
+Or run it as a web server:
+    python server.py -I project/relative/include/dir/1 -I project/relative/include/dir/2 -I /system/include/dir project_dir
+
+	Open http://localhost:8888/ in a browser
 
 Output
 ------
