@@ -1,0 +1,12 @@
+<html>
+  <head>
+	<title>Header Champ</title>
+  </head>
+  <body>
+	<table>
+	  {% for h in sources %}
+	  <tr><td>{{h.count}}</td><td>{{h.size}}</td><td>{{h.total_cost}}</td><td><a href="/file/{{h.name}}">{{h.name}}</a></td></tr>
+	  {% end %}
+	</table>
+  </body>
+</html>

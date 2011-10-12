@@ -1,0 +1,38 @@
+<html>
+  <head>
+	<title>Header Champ - {{header.name}}</title>
+  </head>
+  <body>
+    <H1>{{header.name}}</H1>
+    <table>
+      <tr><td>Lines</td><td>{{header.size}}</td></tr>
+      <tr><td>Count</td><td>{{header.count}}</td></tr>
+      <tr><td>Total Cost</td><td>{{header.total_cost}}</td></tr>
+    </table>
+	<H2>Included By</H2>
+	<ul>
+		{% for ib in header.included_by %}
+		<li>
+		{% if ib in all_sources %}
+		<p><a href="/file/{{ib}}">{{ib}}</a></p>
+		{% else %}
+		<p>{{ib}}</p>
+		{% end %}
+		</li>
+		{% end %}
+	</ul>
+
+	<H2>Includes</H2>
+	<ul>
+	  {% for inc in header.includes %}
+	  <li>
+		{% if inc in all_sources %}
+		<p><a href="/file/{{inc}}">{{inc}}</a></p>
+		{% else %}
+		{{inc}}
+		{% end %}
+	  </li>
+	  {% end %}
+	</ul>
+  </body>
+</html>
