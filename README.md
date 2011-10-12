@@ -13,8 +13,13 @@ Released under the MIT License, see LICENSE for details
 About
 -----
 
-A Python tool inspired by Header Hero for tracking down all your awful
-C and C++ header dependency problems.
+A Python (with a web server) tool inspired by Header Hero for tracking
+down all your awful C and C++ header dependency problems.
+
+Requirements
+------------
+Python
+Tornado
 
 Example
 -------
