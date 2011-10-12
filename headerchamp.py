@@ -30,7 +30,7 @@ def file_size(file):
 
 def add_header(header, included_by):
     if not header in sources:
-        print 'added: ' + header
+        #print 'added: ' + header
         h = Source(header, 0, file_size(header))
         sources[header] = h
         parse(header, os.path.split(header)[0], True)
