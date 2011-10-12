@@ -14,14 +14,20 @@ def file_size(file):
     f.close()
     return count
 
-def add_header(chkpath):
-    if chkpath in headers:
-        headers[chkpath]['count'] += 1
+def add_header(header, included_by):
+    if header in headers:
+        headers[header]['count'] += 1
     else:
-        headers[chkpath] = {
+        headers[header] = {
             'count': 1,
-            'size': file_size(chkpath)
+            'size': file_size(header),
+            'included_by': set()
             }
+
+        parse(header, os.path.split(header)[0])
+
+    if not included_by in headers[header]['included_by']:
+        headers[header]['included_by'].add(included_by)
 
 def parse(filename, in_dir):
     #print filename
@@ -35,7 +41,7 @@ def parse(filename, in_dir):
                 if os.path.exists(chkpath):
                     #print chkpath
                     found = True
-                    add_header(chkpath)
+                    add_header(chkpath, filename)
                     break
             if not found and args['warn_missing_files']:
                 print m.group(1) + ' was not found while parsing %s in %s' % (filename, in_dir)
@@ -48,7 +54,9 @@ def walk(dirname):
             parse(os.path.join(dir, file), dir)
 
 sys_dirs=['/usr/include', '/usr/local/include']
-if __name__ == "__main__":
+include_dirs = []
+def run():
+    global args, include_dirs
     parser = argparse.ArgumentParser(description='Parse a C/C++ project for header dependencies')
     parser.add_argument('-I', '--include-dir', action='append')
     parser.add_argument('-W', '--warn-missing-files', action='store_true', default=False)
@@ -64,5 +72,9 @@ if __name__ == "__main__":
     os.chdir(args['projectdir'])
     walk('.')
 
+if __name__ == "__main__":
+    run()
+
     for k,v in headers.items():
         print '%d %d %d %s' %(v['count'], v['size'], v['count'] * v['size'], k)
+
