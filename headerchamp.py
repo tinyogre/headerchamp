@@ -3,15 +3,18 @@
 import os, sys
 import re
 import argparse
+from graph import graph
+
 inc = re.compile('^\s*#include\s*[<"](.*)[>"]')
 
 class Source:
-    def __init__(self, name, count, size):
+    def __init__(self, name, count, size, is_src = False):
         self.name = name
         self.count = count
         self.size = size
         self.included_by = set()
         self.includes = set()
+        self.is_src = is_src
 
     def finalize(self):
         self.total_cost = self.count * self.size
@@ -56,7 +59,7 @@ def add_header(header, included_by):
 def parse(filename, in_dir, recursed):
     filename = os.path.normpath(filename)
     if not filename in sources:
-        sources[filename] = Source(filename, 0, 0)
+        sources[filename] = Source(filename, 0, 0, True)
 
     src = sources[filename]
 
@@ -92,6 +95,9 @@ def run():
     parser = argparse.ArgumentParser(description='Parse a C/C++ project for header dependencies')
     parser.add_argument('-I', '--include-dir', action='append')
     parser.add_argument('-W', '--warn-missing-files', action='store_true', default=False)
+    parser.add_argument('-g', '--graph')
+    parser.add_argument('-t', '--table', action='store_true', default = False)
+
     parser.add_argument('projectdir', metavar='projectdir')
     args = vars(parser.parse_args())
     projdir = args['projectdir']
@@ -100,16 +106,28 @@ def run():
     #print args['include_dir']
     #print include_dirs
     #print args
-
+    pwd = os.getcwd()
     os.chdir(args['projectdir'])
     walk('.')
+    os.chdir(pwd)
 
     for h in sources.values():
         h.finalize()
 
+    if 'graph' in args:
+        if args['graph'] == '-':
+            f = None
+        else:
+            f = open(args['graph'], 'w')
+        graph(sources, f)
+        if f:
+            f.close()
+
+    if 'table' in args and args['table']:
+        for k,v in sources.items():
+            print '%d %d %d %s' %(v.count, v.size, v.count * v.size, k)
+
 if __name__ == "__main__":
     run()
 
-    for k,v in sources.items():
-        print '%d %d %d %s' %(v.count, v.size, v.count * v.size, k)
 
