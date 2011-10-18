@@ -3,6 +3,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.template
 import headerchamp
+import os
 
 from operator import itemgetter, attrgetter
 
@@ -31,10 +32,14 @@ class FileHandler(tornado.web.RequestHandler):
         header = headerchamp.sources[filename]
         self.write(loader.load('file.html').generate(header=header, all_sources = headerchamp.sources))
 
+settings = {
+    'static_path': os.path.join(os.getcwd(), 'static'),
+}
+    
 application = tornado.web.Application([
         (r'/', MainHandler),
         (r'/file/(.*)', FileHandler),
-])
+], **settings)
 
 if __name__=="__main__":
     application.listen(8888)

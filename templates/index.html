@@ -1,12 +1,20 @@
 <html>
   <head>
 	<title>Header Champ</title>
+	<link rel="stylesheet" href="static/style.css" type="text/css"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   </head>
   <body>
+	<H1> All Files</H1>
 	<table>
+	  <tr><th>Count</th><th>Lines</th><th>Cumulative Lines</th><th>File</th></tr>
 	  {% for h in sources %}
 	  <tr><td>{{h.count}}</td><td>{{h.size}}</td><td>{{h.total_cost}}</td><td><a href="/file/{{h.name}}">{{h.name}}</a></td></tr>
 	  {% end %}
 	</table>
+	<script>$(document).ready(function(){
+	  $("tr:odd").addClass("odd");
+	  });
+	</script>
   </body>
 </html>
