@@ -1,17 +1,30 @@
 <html>
   <head>
-	<title>Header Champ - {{header.name}}</title>
+	<title>Header Champ - {{source.name}}</title>
+	<link rel="stylesheet" href="static/style.css" type="text/css"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" href="/static/css/shCore.css", type="text/css"/>
+	<link rel="stylesheet" href="/static/css/shThemeMidnight.css", type="text/css"/>
+	<script src="/static/js/XRegExp.js" type="text/javascript"></script>
+	<script src="/static/js/shCore.js" type="text/javascript"></script>
+	<script src="/static/js/shBrushCpp.js" type="text/javascript"></script>
+	<script src="/static/js/shBrushCSharp.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+
   </head>
   <body>
-    <H1>{{header.name}}</H1>
+    <H1>{{source.name}}</H1>
+	<a href="/source/{{source.name}}">View Source</a>/
+	<a href="/">Back to Top</a>
     <table>
-      <tr><td>Lines</td><td>{{header.size}}</td></tr>
-      <tr><td>Count</td><td>{{header.count}}</td></tr>
-      <tr><td>Total Cost</td><td>{{header.total_cost}}</td></tr>
+      <tr><td>Lines</td><td>{{source.size}}</td></tr>
+      <tr><td>Count</td><td>{{source.count}}</td></tr>
+      <tr><td>Total Cost</td><td>{{source.total_cost}}</td></tr>
     </table>
 	<H2>Included By</H2>
 	<ul>
-		{% for ib in header.included_by %}
+		{% for ib in source.included_by %}
 		<li>
 		{% if ib in all_sources %}
 		<p><a href="/file/{{ib}}">{{ib}}</a></p>
@@ -24,7 +37,7 @@
 
 	<H2>Includes</H2>
 	<ul>
-	  {% for inc in header.includes %}
+	  {% for inc in source.includes %}
 	  <li>
 		{% if inc in all_sources %}
 		<p><a href="/file/{{inc}}">{{inc}}</a></p>
@@ -34,5 +47,15 @@
 	  </li>
 	  {% end %}
 	</ul>
+
+<script type="syntaxhighlighter" class="brush: cpp ; highlight:{{highlights}}"><![CDATA[
+{{text}}
+]]></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+  SyntaxHighlighter.all();
+  });
+</script>
+
   </body>
 </html>

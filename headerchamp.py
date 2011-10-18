@@ -15,6 +15,8 @@ class Source:
         self.included_by = set()
         self.includes = set()
         self.is_src = is_src
+        self.path=os.path.join(os.getcwd(), name)
+        self.include_line_nums = []
 
     def finalize(self):
         self.total_cost = self.count * self.size
@@ -65,9 +67,12 @@ def parse(filename, in_dir, recursed):
 
     #print filename
     f = open(filename, 'r')
+    line_num = 0
     for line in f:
+        line_num += 1
         m = inc.match(line)
         if m:            
+            src.include_line_nums.append(line_num)
             for id in [in_dir] + include_dirs:
                 found = False
                 chkpath = os.path.normpath(os.path.join(id, m.group(1)))

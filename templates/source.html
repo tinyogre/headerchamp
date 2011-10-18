@@ -1,0 +1,22 @@
+<html>
+  <head>
+	<link rel="stylesheet" href="/static/css/shCore.css", type="text/css"/>
+	<link rel="stylesheet" href="/static/css/shThemeMidnight.css", type="text/css"/>
+	<script src="/static/js/XRegExp.js" type="text/javascript"></script>
+	<script src="/static/js/shCore.js" type="text/javascript"></script>
+	<script src="/static/js/shBrushCpp.js" type="text/javascript"></script>
+	<script src="/static/js/shBrushCSharp.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+  </head>
+  <body>
+	<h1>{{source.name}}</h1>
+<script type="syntaxhighlighter" class="brush: cpp ; highlight:{{highlights}}"><![CDATA[
+{{text}}
+]]></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+  SyntaxHighlighter.all();
+  });
+</script>
+  </body>
+</html>

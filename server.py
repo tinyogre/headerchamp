@@ -14,6 +14,21 @@ sources = None
 
 loader = tornado.template.Loader('templates')
 
+def get_src(source):
+    f = open(source.path, 'r')
+    text = f.read()
+    f.close()
+    highlights='['
+    first = True
+    for l in source.include_line_nums:
+        if not first:
+            highlights += ','
+        else:
+            first = False
+        highlights += str(l)
+    highlights += ']'
+    return text, highlights
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         global sources
@@ -29,8 +44,20 @@ class MainHandler(tornado.web.RequestHandler):
 class FileHandler(tornado.web.RequestHandler):
     def get(self, filename):
         global sources
-        header = headerchamp.sources[filename]
-        self.write(loader.load('file.html').generate(header=header, all_sources = headerchamp.sources))
+        source = headerchamp.sources[filename]
+        text, highlights = get_src(source)
+        self.write(loader.load('file.html').generate(source=source, 
+                                                     text = text, 
+                                                     highlights = highlights, 
+                                                     all_sources = headerchamp.sources))
+
+class SourceHandler(tornado.web.RequestHandler):
+    def get(self, filename):
+        global sources
+        source = headerchamp.sources[filename]
+        text, highlights = get_src(source)
+
+        self.write(loader.load('source.html').generate(source=source, highlights=highlights, text=text))
 
 settings = {
     'static_path': os.path.join(os.getcwd(), 'static'),
@@ -39,6 +66,7 @@ settings = {
 application = tornado.web.Application([
         (r'/', MainHandler),
         (r'/file/(.*)', FileHandler),
+        (r'/source/(.*)', SourceHandler),
 ], **settings)
 
 if __name__=="__main__":
