@@ -98,17 +98,23 @@ def run():
     parser.add_argument('-g', '--graph')
     parser.add_argument('-t', '--table', action='store_true', default = False)
 
-    parser.add_argument('projectdir', metavar='projectdir')
+    parser.add_argument('-p', '--projectdir', metavar='projectdir')
+    parser.add_argument('-s', '--scandir', action='append')
+
     args = vars(parser.parse_args())
     projdir = args['projectdir']
     include_dirs = sys_dirs + args['include_dir']
+    scan_dirs = args['scandir']
+    if not scan_dirs:
+        scan_dirs = ['.']
 
     #print args['include_dir']
     #print include_dirs
     #print args
     pwd = os.getcwd()
     os.chdir(args['projectdir'])
-    walk('.')
+    for d in scan_dirs:
+        walk(d)
     os.chdir(pwd)
 
     for h in sources.values():
