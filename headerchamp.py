@@ -63,7 +63,7 @@ def add_header(header, included_by):
 def parse(filename, in_dir, recursed):
     filename = os.path.normpath(filename)
     if not filename in sources:
-        sources[filename] = Source(filename, 0, 0, True)
+        sources[filename] = Source(filename, 0, file_size(filename), True)
 
     src = sources[filename]
 
@@ -87,6 +87,7 @@ def parse(filename, in_dir, recursed):
                     break
             if not found and args['warn_missing_files']:
                 print m.group(1) + ' was not found while parsing %s in %s' % (filename, in_dir)
+    sources[filename] = src
     f.close()
 
 def walk(dirname):
