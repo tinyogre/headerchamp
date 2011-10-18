@@ -18,9 +18,9 @@ down all your awful C and C++ header dependency problems.
 
 Requirements
 ------------
-Python
-Tornado
-SCons (Or just copy some files manually)
+Python  
+Tornado  
+SCons (Or just copy some files manually)  
 
 Installation
 ------------
@@ -38,9 +38,3 @@ Or run it as a web server:
 
 	Open http://localhost:8888/ in a browser
 
-Output
-------
-<count> <lines> <total_lines> <filename>
-
-Column 3 is the overal count (in lines processed) of that header,
-column 2 is the cost of including it once.
