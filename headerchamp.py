@@ -17,6 +17,7 @@ class Source:
         self.is_src = is_src
         self.path=os.path.join(os.getcwd(), name)
         self.include_line_nums = []
+        self.child_size = 0
 
     def finalize(self):
         self.total_cost = self.count * self.size
@@ -57,6 +58,7 @@ def add_header(header, included_by):
     h.count += 1
     if included_by:
         h.add_included_by(included_by)
+    return sources[header].size + sources[header].child_size
 
 def parse(filename, in_dir, recursed):
     filename = os.path.normpath(filename)
@@ -68,6 +70,7 @@ def parse(filename, in_dir, recursed):
     #print filename
     f = open(filename, 'r')
     line_num = 0
+    src.child_size = 0
     for line in f:
         line_num += 1
         m = inc.match(line)
@@ -79,13 +82,12 @@ def parse(filename, in_dir, recursed):
                 if os.path.exists(chkpath):
                     #print chkpath
                     found = True
-                    add_header(chkpath, os.path.normpath(filename))
+                    src.child_size += add_header(chkpath, os.path.normpath(filename))
                     src.includes.add(chkpath)
                     break
             if not found and args['warn_missing_files']:
                 print m.group(1) + ' was not found while parsing %s in %s' % (filename, in_dir)
     f.close()
-
 
 def walk(dirname):
     for dir, dirs, files in os.walk(dirname):

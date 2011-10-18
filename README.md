@@ -1,7 +1,7 @@
 Header Champ
 ============
 
-version 0.01
+version 0.02
 ------------
 
 Licensing
